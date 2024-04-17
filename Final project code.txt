@@ -1,0 +1,143 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+
+#import csv data to pandas dataframe
+data=pd.read_csv("/content/heart.csv")
+
+
+print(data)
+
+
+# Split the dataset into features and labels
+X = data.drop('sex',axis=1)
+y = data['sex']
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y,
+test_size=0.2, random_state=42)
+
+
+
+# Initialize the logistic regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict gender for new data
+# Assuming you have a new dataset 'new_data' with features
+# new_predictions = model.predict(new_data)
+
+
+# Initialize the logistic regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X_train, y_train
+
+
+# Split data into features and target variable
+X = data[['sex']]
+y = data['sex']
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create logistic regression model
+log_reg = LogisticRegression()
+
+# Train the model
+log_reg.fit(X_train, y_train)
+# Initialize the logistic regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Count the number of males and females in the 'gender' column
+male_count = (data['sex'] == 1).sum()
+female_count = (data['sex'] == 0).sum()
+
+print("Male count:", male_count)
+print("Female count:", female_count)
+
+
+
+
+# Predict probabilities
+probabilities = log_reg.predict_proba(X_test)[:,1]
+
+# Classify individuals as having the disease if their predicted probability is above 0.5
+predictions = (probabilities > 0).astype(int)
+
+# Combine predictions with actual gender for analysis
+predictions_df = pd.DataFrame({'sex': X_test['sex'], 'prediction': predictions, 'actual': y_test})
+
+# Count the number of males and females who are predicted to have the disease
+male_disease_count = predictions_df[(predictions_df['sex'] == 1) &
+(predictions_df['prediction'] == 1)].shape[0]
+female_disease_count = predictions_df[(predictions_df['sex'] == 0) &
+(predictions_df['prediction'] == 1)].shape[0]
+
+print("Number of males with heart disease:", male_disease_count)
+print("Number of females with heart disease:", female_disease_count)
+
+
+
+# healthy male
+male=male_count-male_disease_count
+#healthy female
+female=female_count-female_disease_count
+print( " Number of males without heart disease:" ,male)
+print( " Number of males without heart disease:",female)
+
+
+x=data.drop(columns='sex',axis=1)
+y=data['sex']
+# to print x
+print(x)
+
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,stratify=y,random_state=42)
+print(x.shape,x_train.shape,x_test.shape)
+
+
+
+model=LogisticRegression()
+#training the logistic regression model with training data
+model.fit(x_train,y_train)
+
+
+
+x_train_prediction=model.predict(x_train)
+training_data_accuracy=accuracy_score(x_train_prediction,y_train)
+print('tarining data accuracy:',training_data_accuracy)
+
+
+
+x_test_prediction=model.predict(x_test)
+test_data_accuracy=accuracy_score(x_test_prediction,y_test)
+print('test data accuracy:',test_data_accuracy)
+
+
+
+input_data=(28,1,3,110,211,0,0,144,1,1.8,1,0,2)
+# change the input data to numpy array
+input_data_as_numpy_array=np.asarray(input_data)
+#reshape the numpy  array as we are predicting for only on instance
+
+
+
+input_data_reshape=input_data_as_numpy_array.reshape(1,-1)
+prediction=model.predict(input_data_reshape)
+print(prediction)
+if(prediction[0])==0:
+  print('the person does not have heart disease')
+else:
+  print('the person has heart disease')
